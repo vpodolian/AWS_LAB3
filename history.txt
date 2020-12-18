@@ -1,0 +1,128 @@
+vpc-d2d56bb9
+sg-091aaf85db277991e
+subnet-a8fbbfe4
+ami-09558250a3419e7d0
+
+
+
+aws ec2 create-security-group --group-name ViktorSecurity --description "Security group lab 3" --vpc-id vpc-d2d56bb9
+ "GroupId": "sg-091aaf85db277991e"
+
+aws ec2 authorize-security-group-ingress --group-id sg-091aaf85db277991e --protocol tcp --port 22 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id sg-091aaf85db277991e --protocol tcp --port 80 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id sg-091aaf85db277991e --protocol tcp --port 443 --cidr 0.0.0.0/0
+aws ec2 create-key-pair --key-name ViktorKey --output text > ViktorKey.pem
+aws ec2 modify-subnet-attribute --subnet-id subnet-a8fbbfe4 --map-public-ip-on-launch
+aws ec2 run-instances --image-id ami-09558250a3419e7d0 --count 1 --instance-type t2.micro --key-name ViktorKey --security-group-ids sg-091aaf85db277991e --subnet-id subnet-a8fbbfe4 --user-data file://apache.txt
+{
+    "Groups": [],
+    "Instances": [
+        {
+            "AmiLaunchIndex": 0,
+            "ImageId": "ami-09558250a3419e7d0",
+            "InstanceId": "i-0321eeaeb8efe9cd0",
+            "InstanceType": "t2.micro",
+            "KeyName": "ViktorKey",
+            "LaunchTime": "2020-12-18T08:57:12+00:00",
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "Placement": {
+                "AvailabilityZone": "us-east-2c",
+                "GroupName": "",
+                "Tenancy": "default"
+            },
+            "PrivateDnsName": "ip-172-31-33-199.us-east-2.compute.internal",
+            "PrivateIpAddress": "172.31.33.199",
+            "ProductCodes": [],
+            "PublicDnsName": "",
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "StateTransitionReason": "",
+            "SubnetId": "subnet-a8fbbfe4",
+            "VpcId": "vpc-d2d56bb9",
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [],
+            "ClientToken": "ad665b6d-b49a-46a3-94cf-dd0a83c2d9f3",
+            "EbsOptimized": false,
+            "EnaSupport": true,
+            "Hypervisor": "xen",
+            "NetworkInterfaces": [
+                {
+                    "Attachment": {
+                        "AttachTime": "2020-12-18T08:57:12+00:00",
+                        "AttachmentId": "eni-attach-0d80cc520e37bfe6c",
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": 0,
+                        "Status": "attaching"
+                    },
+                    "Description": "",
+                    "Groups": [
+                        {
+                            "GroupName": "ViktorSecurity",
+                            "GroupId": "sg-091aaf85db277991e"
+                        }
+                    ],
+                    "Ipv6Addresses": [],
+                    "MacAddress": "0a:fb:62:ce:ff:3c",
+                    "NetworkInterfaceId": "eni-06217739d841c7fe8",
+                    "OwnerId": "011311898616",
+                    "PrivateDnsName": "ip-172-31-33-199.us-east-2.compute.internal",
+                    "PrivateIpAddress": "172.31.33.199",
+                    "PrivateIpAddresses": [
+                        {
+                            "Primary": true,
+                            "PrivateDnsName": "ip-172-31-33-199.us-east-2.compute.internal",
+                            "PrivateIpAddress": "172.31.33.199"
+                        }
+                    ],
+                    "SourceDestCheck": true,
+                    "Status": "in-use",
+                    "SubnetId": "subnet-a8fbbfe4",
+                    "VpcId": "vpc-d2d56bb9",
+                    "InterfaceType": "interface"
+                }
+            ],
+            "RootDeviceName": "/dev/xvda",
+            "RootDeviceType": "ebs",
+            "SecurityGroups": [
+                {
+                    "GroupName": "ViktorSecurity",
+                    "GroupId": "sg-091aaf85db277991e"
+                }
+            ],
+            "SourceDestCheck": true,
+            "StateReason": {
+                "Code": "pending",
+                "Message": "pending"
+            },
+            "VirtualizationType": "hvm",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 1
+            },
+            "CapacityReservationSpecification": {
+                "CapacityReservationPreference": "open"
+            },
+            "MetadataOptions": {
+                "State": "pending",
+                "HttpTokens": "optional",
+                "HttpPutResponseHopLimit": 1,
+                "HttpEndpoint": "enabled"
+            },
+            "EnclaveOptions": {
+                "Enabled": false
+            }
+        }
+    ],
+    "OwnerId": "011311898616",
+    "ReservationId": "r-0426ad89c292369eb"
+}
+aws ec2 create-tags --resources i-0321eeaeb8efe9cd0 --tags Key=Role,Value=WebServer
+aws ec2 create-image --instance-id i-0321eeaeb8efe9cd0 --name "Security group lab 3" --description "Image (Apache Web Server)"
+{
+    "ImageId": "ami-0414a33ff1242a9d6"
+}
+
